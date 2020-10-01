@@ -36,9 +36,13 @@ public class WarehouseRouter {
         CollectingStation routTo;
         for (int i = 0; i < this.generator.sample(); i++)
         {
-            if (isEmpty()) break;
+            if (isEmpty()){
+                Trace.out(Level.ERR, "No orders in router!");
+                break;
+            } 
             
-            routTo = findStation(orders.peek().getType(), stations);
+            
+            routTo = findStation(orders.peek().getStation(), stations);
             if (routTo == null)
             {
                 Trace.out(Level.ERR, "No collecting station found for type");
@@ -64,15 +68,12 @@ public class WarehouseRouter {
         generator = new Uniform(min, max);
     }
 
-    private CollectingStation findStation(EventType type, CollectingStation[] stations)
+    private CollectingStation findStation(CollectingStation dest, CollectingStation[] stations)
     {
-        EventType searchable;
-        if (type == EventType.TOC1) searchable = EventType.COLL1;
-        else searchable = EventType.COLL2;
 
         for (CollectingStation station : stations)
         {
-            if (station.getType() == searchable)
+            if (station == dest)
             {
                 return station;
             }

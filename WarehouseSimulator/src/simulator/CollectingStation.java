@@ -10,6 +10,9 @@ import simulator.Trace.Level;
 public class CollectingStation {
     private Motor motor;
 
+    private int id;
+    private static int i = 1;
+
     private PriorityQueue<Order> orders;
     private EventType schedulingType;
 
@@ -18,6 +21,7 @@ public class CollectingStation {
     public CollectingStation(Motor motor, EventType schedulingType, int collectors)
     {
         this.motor = motor;
+        this.id = i++;
         this.orders = new PriorityQueue<Order>();
         this.schedulingType = schedulingType;
         this.collectors = new Collector[collectors];
@@ -36,7 +40,7 @@ public class CollectingStation {
         {
             if (!c.collecting())
             {
-                Trace.out(Trace.Level.INFO, "Tilaus: "+this.orders.peek().getId()+" otetaan käsittelyyn");
+                Trace.out(Trace.Level.INFO, "Order: "+this.orders.peek().getId()+" started collecting");
                 collectingTime = Motor.formatTime(Clock.getInstance().getTime()+this.orders.peek().getCollectionTime());
                 c.startCollecting(this.orders.remove(), collectingTime);
                 motor.newEvent(new Event(this.schedulingType, collectingTime));
@@ -50,9 +54,10 @@ public class CollectingStation {
     {        
         for (Collector c : collectors)
         {
-            Trace.out(Level.INFO, c.getName()+ " Order: "+c.getOrder()+" finish time: "+c.getFinishTime());
+            
             if (c.getFinishTime() == Clock.getInstance().getTime() && c.collecting())
             {
+                Trace.out(Level.INFO, c.getName()+ " Order: "+c.getOrder()+" finish time: "+c.getFinishTime());
                 return c.stopCollecting();
             }
         }
@@ -91,6 +96,18 @@ public class CollectingStation {
         return true;
     }
 
+    public boolean hasCompleted()
+    {
+        for (Collector c : this.collectors)
+        {
+            if (c.getFinishTime() == Clock.getInstance().getTime())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean hasOrders()
     {
         return this.orders.size() != 0;
@@ -104,6 +121,10 @@ public class CollectingStation {
         }
     }
 
-    
+    @Override
+    public String toString()
+    {
+        return "Station"+this.id;
+    }
 
 }

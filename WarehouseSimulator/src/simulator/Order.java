@@ -24,7 +24,7 @@ public class Order implements Comparable<Order>{
     private static int i = 1;
     private static double sum = 0;
     private double collectTime;
-    private EventType type;
+    private CollectingStation collectingStation;
 
     public enum SortType {
         SIZE,
@@ -42,16 +42,16 @@ public class Order implements Comparable<Order>{
         sortType = type;
     }
     
-    public Order(double collectTime, int leaveTime, EventType type)
+    public Order(double collectTime, int leaveTime, CollectingStation station)
     {
         this.id = i++;
         this.collectTime = Motor.formatTime(Math.abs(collectTime));
         this.targetLeaveTime = leaveTimes[leaveTime];
-        this.type = type;
+        this.collectingStation = station;
         this.arrivalTime = Clock.getInstance().getTime();
 
         arrivalTime = Clock.getInstance().getTime();
-        Trace.out(Trace.Level.INFO, "Uusi tilaus:"+id+":"+this.arrivalTime+":"+this.collectTime+":"+this.type);
+        Trace.out(Trace.Level.INFO, "Uusi tilaus:"+id+":"+this.arrivalTime+":"+this.collectTime+":"+this.collectingStation);
     }
 
     public int getId()
@@ -90,9 +90,9 @@ public class Order implements Comparable<Order>{
         return this.targetLeaveTime;
     }
 
-    public EventType getType()
+    public CollectingStation getStation()
     {
-        return this.type;
+        return this.collectingStation;
     }
 
     public void report()

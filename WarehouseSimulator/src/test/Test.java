@@ -14,7 +14,7 @@ public class Test {
         Order.setSortType(SortType.SIZE);
         Motor motor = new Motor();
        
-        motor.setSimulatorTime(18);
+        motor.setSimulatorTime(24);
         motor.run();
         
     }

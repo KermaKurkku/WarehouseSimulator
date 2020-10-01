@@ -4,9 +4,12 @@
     // DONE log orders that are on time and orders that didn't make it
     // IDEA emphasize on some of the leave times
 
-// TODO change the colletingStations to use a single enum
-// TODO change order to use collectingStation to set the location of the order
-// TODO 
+// TODO Create a separate util package for formatting time
+// TODO Create an orderList which keeps a track of the orders
+    // TODO Add bool completed to Orders for keeping track of completed orders
+
+// DONE change the colletingStations to use a single enum
+// DONE change order to use collectingStation to set the location of the order 
 // TODO make creating collectingStations dynamic
 
 //TODO print the amount of collected orders on collectors
@@ -16,11 +19,10 @@
 
 // TODO add more sorting types
 
-// IDEA add text based interface
-// IDEA dynamic adding of CollectingStations through interface?
 // TODO refractor sources to be clearer
 // TODO Add javafx interface
-// TODO Add functionality for changing the amount of collectors and other parameters
+// TODO Make changing the amount of collectors possible
+// TODO Make it possible to increase the amount of stations
 
 // TODO log other collectiong statistics
 // TODO Add saving to database

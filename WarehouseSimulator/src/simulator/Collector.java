@@ -2,12 +2,12 @@ package simulator;
 
 import simulator.Trace.Level;
 
-// TODO javaaDoc
+// TODO javaDoc
 public class Collector {
     private boolean collecting = false;
     private Order order = null;
-    private String name;
-    private static int id = 0;
+    private String name; 
+    private static int id = 1;
     private double finishTime = -1;
     private int collectedOrders = 0;
 
@@ -23,7 +23,7 @@ public class Collector {
         this.collecting = true;
         this.order = ordr;
 
-        if (this.order == null) // TODO remove
+        if (this.order == null)
         {
             Trace.out(Level.ERR, "Null order on collector.");
         }
@@ -66,6 +66,11 @@ public class Collector {
     public Order getOrder()
     {
         return this.order;
+    }
+
+    public int getCollectedOrders()
+    {
+        return this.collectedOrders;
     }
 
 

@@ -15,39 +15,44 @@ public class OrderGenerator {
     private ContinuousGenerator generator;
     private WarehouseRouter router;
     private Motor motor;
+    private CollectingStation[] stations;
 
     /**
      * Constructor for the Order generator
      * @param generator Number generator for generating order collect times
      */
-    public OrderGenerator(ContinuousGenerator generator, Motor motor)
+    public OrderGenerator(ContinuousGenerator generator, Motor motor, CollectingStation[] stations)
     {
         this.router = WarehouseRouter.getInstance();
         this.motor = motor;
         this.generator = generator;
+        this.stations = stations;
     }
 
     /**
      * Creates a specified amount of orders
      */
-    public void createOrders(int amount)
+    public void createOrders(double amount)
     {
-        EventType type;
+        
         for (int i = 0; i < amount; i++)
         {
-            type = generateType();
-            router.addOrder(new Order(generator.sample(), generateLeaveTime(), type));
+            
+            router.addOrder(new Order(generator.sample(), generateLeaveTime(), generateStation()));
         }
-        motor.newEvent(new Event(EventType.ORDR, Clock.getInstance().getTime()+generator.sample()*3));
+        if (!(Clock.getInstance().getTime()  > (motor.getSimTime() - 1)))
+        {
+            motor.newEvent(new Event(EventType.ORDR, Clock.getInstance().getTime()+Math.abs(generator.sample()*3)));
+            motor.printEvents();
+        }
+        
     }
 
     public void initializeOrders(int amount)
     {
-        EventType type;
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i < Math.abs(amount); i++)
         {
-            type = generateType();
-            router.addOrder(new Order(generator.sample(), generateLeaveTime(), type));
+            router.addOrder(new Order(generator.sample(), generateLeaveTime(), generateStation()));
         }
         motor.newEvent(new Event(EventType.ROUT, Clock.getInstance().getTime()+Math.abs(generator.sample())));
         // This is horrible to read, change mby?
@@ -59,16 +64,12 @@ public class OrderGenerator {
      * Returns an EventType for the order selected randomly
      * @return EvenetType for the order
      */
-    private EventType generateType()
+    private CollectingStation generateStation()
     {
-        double rand = Math.random();
+        int range = (stations.length - 1) +1;
+        int rand = (int)(Math.random()* range);
 
-        if (rand > 0.5)
-        {
-            return EventType.TOC1;
-        } else{
-            return EventType.TOC2;
-        }
+        return stations[rand];
     }
 
     /**

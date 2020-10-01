@@ -8,28 +8,37 @@ import simulator.Trace.Level;
 public class Motor {
     private double simTime = 0;
 
+    private int amountOfStations = 5;
+
     private int completedOrders = 0;
     private int lateOrders = 0;
     
-    private CollectingStation[] stations = new CollectingStation[2];
+    private CollectingStation[] stations;
     private Clock clock;
 
     private EventList eList;
     private OrderGenerator generator;
     private WarehouseRouter router;
 
-    private Uniform orderAmountGenerator = new Uniform(3,15); // default values
+    private int minOrders = 15;
+    private Normal orderVariance = new Normal(3,4, (long)(System.nanoTime()*Math.PI)); // default values
 
     // TODO be able to set amount of colletors from outside
     public Motor()
     {
-        stations[0] = new CollectingStation(this, EventType.COLL1, 2);
-        stations[1] = new CollectingStation(this, EventType.COLL2, 3);
+        stations = new CollectingStation[amountOfStations];
+        int collectors = 2;
+        for (int i = 0; i < stations.length; i++)
+        {
+            stations[i] = new CollectingStation(this, EventType.COLL, collectors);
+            collectors++;
+        }
+        
 
         clock = Clock.getInstance();
         router = WarehouseRouter.getInstance();
         router.setMotor(this);
-        this.generator = new OrderGenerator(new Normal(0.1, 0.15), this);
+        this.generator = new OrderGenerator(new Normal(0.1, 0.15), this, stations);
         this.eList = new EventList();
         this.generator.initializeOrders(15);
         
@@ -82,13 +91,9 @@ public class Motor {
         {
             case ROUT:  router.routeOrders(stations);
                         break;
-            case COLL1: o = stations[0].removeCompleted();
-                        sendCompletedOrders(o);
+            case COLL:  getCompletedOrders();
                         break;
-            case COLL2: o = stations[1].removeCompleted();
-                        sendCompletedOrders(o);
-                        break;
-            case ORDR:  generator.createOrders((int)this.orderAmountGenerator.sample());
+            case ORDR:  generator.createOrders(this.minOrders+(int)this.orderVariance.sample());
         }
     }
 
@@ -126,9 +131,23 @@ public class Motor {
         this.eList.printEvents();
     }
 
-    public void setOrderGeneration(int min, int max)
+    public void setOrderGeneration(int mean, int variance)
     {
-        this.orderAmountGenerator = new Uniform(min, max);
+        this.orderVariance = new Normal(mean, variance);
+    }
+
+    private void getCompletedOrders()
+    {
+        Order o;
+        for (CollectingStation s : stations)
+        {
+            while (s.hasCompleted())    // Remove all completed orders
+            {
+                o = s.removeCompleted();
+                sendCompletedOrders(o);
+            }
+            
+        }
     }
 
     private void sendCompletedOrders(Order ordr) // check if order is null and move it forwards
@@ -146,6 +165,11 @@ public class Motor {
         this.completedOrders++;
         //ordr.report();
 
+    }
+
+    public double getSimTime()
+    {
+        return this.simTime;
     }
 
     public void reportResults()

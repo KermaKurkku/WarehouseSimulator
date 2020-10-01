@@ -1,10 +1,10 @@
 package simulator;
 
+/**
+ * Event types to tell what the motor should be doing next
+ */
 public enum EventType {
-    TOC1,
-    TOC2,
-    COLL1,
-    COLL2,
+    COLL,
     ROUT,
     ORDR
 }
