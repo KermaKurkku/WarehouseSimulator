@@ -4,7 +4,18 @@
     // DONE log orders that are on time and orders that didn't make it
     // IDEA emphasize on some of the leave times
 
-// TODO Create a separate util package for formatting time
+// TODO Let visualization be able to get the amount of stations in motor
+// TODO let visualization be able to keep a track of orders in stations
+    // Through orderList?
+
+// TODO figure out order visualization
+    // Keep track of order location in order-class
+    // Have a constant height to orders and a scaling size - collectTime?
+        // Let visualize class information or not?
+    // Keep a track of collectingStation location in collectingStation-class
+    // Distribute evenly by dividing canvas h/stations.length()
+    // Draw a line from router to collectingStation when routing
+
 // TODO Create an orderList which keeps a track of the orders
     // TODO Add bool completed to Orders for keeping track of completed orders
 
@@ -20,9 +31,11 @@
 // TODO add more sorting types
 
 // TODO refractor sources to be clearer
-// TODO Add javafx interface
+// DONE Add javafx interface
 // TODO Make changing the amount of collectors possible
 // TODO Make it possible to increase the amount of stations
+
+
 
 // TODO log other collectiong statistics
 // TODO Add saving to database
