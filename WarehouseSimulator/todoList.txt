@@ -1,0 +1,29 @@
+// DONE leave times to orders
+    // DONE Create leave times in orderGenerator - Enums in Order?
+    // DONE Limit leave time generation to 1-time before leave time
+    // DONE log orders that are on time and orders that didn't make it
+    // IDEA emphasize on some of the leave times
+
+// TODO change the colletingStations to use a single enum
+// TODO change order to use collectingStation to set the location of the order
+// TODO 
+// TODO make creating collectingStations dynamic
+
+//TODO print the amount of collected orders on collectors
+
+// TODO add loading bay
+// TODO keep a track of collected orders and stuff
+
+// TODO add more sorting types
+
+// IDEA add text based interface
+// IDEA dynamic adding of CollectingStations through interface?
+// TODO refractor sources to be clearer
+// TODO Add javafx interface
+// TODO Add functionality for changing the amount of collectors and other parameters
+
+// TODO log other collectiong statistics
+// TODO Add saving to database
+
+// TODO Make simulation go by days not hours, set opening and closing times
+// TODO set time in 24h format?
