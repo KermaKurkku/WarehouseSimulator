@@ -7,4 +7,10 @@ public interface IMotor {
 	public void setDelay(long time);
 	public long getDelay();
 	
+	// methods for visualizing
+	public int getCollectingStationCount();
+	public int[] getStationOrdersCount();
+	public int[] getStationCollectorCount();
+	public int getRouterOrdersCount();
+	
 }

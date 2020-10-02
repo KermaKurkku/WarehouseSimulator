@@ -30,7 +30,7 @@ public class WarehouseRouter {
         return INSTANCE;
     }
 
-    // Routes the orrders by type
+    // Routes the orders by type
     public void routeOrders(CollectingStation[] stations)
     {
         CollectingStation routTo;
@@ -84,6 +84,11 @@ public class WarehouseRouter {
     public boolean isEmpty()
     {
         return this.orders.isEmpty();
+    }
+    
+    public int getOrderCount()
+    {
+    	return this.orders.size();
     }
 
     public int getTotalOrders()

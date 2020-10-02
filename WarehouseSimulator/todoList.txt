@@ -4,29 +4,22 @@
     // DONE log orders that are on time and orders that didn't make it
     // IDEA emphasize on some of the leave times
 
-// TODO Let visualization be able to get the amount of stations in motor
-// TODO let visualization be able to keep a track of orders in stations
-    // Through orderList?
-
-// TODO figure out order visualization
-    // Keep track of order location in order-class
-    // Have a constant height to orders and a scaling size - collectTime?
-        // Let visualize class information or not?
-    // Keep a track of collectingStation location in collectingStation-class
-    // Distribute evenly by dividing canvas h/stations.length()
-    // Draw a line from router to collectingStation when routing
-
-// TODO Create an orderList which keeps a track of the orders
-    // TODO Add bool completed to Orders for keeping track of completed orders
+// DONE figure out order visualization
+    // DONE motor method int getCollectingStationCount() - returns the amount of collectingStations
+    // DONE motor method int[] getStationOrdersCount() - returns the amount of orders on each station
+    // DONE motor method int[] getStationCollectorCount() - returns the amount of collecors on each station
+    // DONE motor method int getRouterOrdersCount() - returns the amount of orders on router
+    // DONE Custom dataStructure for CollectingStation graphics?
+       
 
 // DONE change the colletingStations to use a single enum
 // DONE change order to use collectingStation to set the location of the order 
 // TODO make creating collectingStations dynamic
 
-//TODO print the amount of collected orders on collectors
-
 // TODO add loading bay
 // TODO keep a track of collected orders and stuff
+
+// TODO print the amount of collected orders on collectors
 
 // TODO add more sorting types
 
@@ -34,8 +27,6 @@
 // DONE Add javafx interface
 // TODO Make changing the amount of collectors possible
 // TODO Make it possible to increase the amount of stations
-
-
 
 // TODO log other collectiong statistics
 // TODO Add saving to database

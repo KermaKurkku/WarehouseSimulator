@@ -9,9 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import simulator.MainApp;
 import simulator.util.NumberFormatter;
 
+// TODO javadoc
 public class WarehouseSimulationController implements IGui {
 	
 	@FXML
@@ -35,8 +37,10 @@ public class WarehouseSimulationController implements IGui {
 	@FXML
 	private AnchorPane splitAnchor;
 	
-	private Visualization visual;
+	@FXML
+	private Pane animationPane;
 	
+	private Visualization visual;	
 	
 	private MainApp mainApp;
 	
@@ -45,13 +49,18 @@ public class WarehouseSimulationController implements IGui {
 		
 	}
 	
-	/**
-	 * Called automatically when the fxml is loaded
-	 */
 	@FXML
 	private void initialize()
 	{
 		
+		this.visual = new Visualization(550, 450, this.animationPane);
+		AnchorPane.setLeftAnchor(this.visual, (double)25);
+		AnchorPane.setRightAnchor(this.visual, (double)25);
+		AnchorPane.setTopAnchor(this.visual, (double)100);
+		AnchorPane.setBottomAnchor(this.visual, (double)5);
+		splitAnchor.getChildren().add(this.visual);	
+		System.out.println(this.visual.getHeight());
+		this.visual.drawCollectingStations(3);
 	}
 	
 	public void setMainApp(MainApp mainApp)
@@ -59,15 +68,9 @@ public class WarehouseSimulationController implements IGui {
 		this.mainApp = mainApp;
 	}
 	
-	public void setVisualization(Visualization visual)
+	public Pane getPane()
 	{
-		this.visual = visual;
-		AnchorPane.setLeftAnchor(this.visual, (double)25);
-		AnchorPane.setRightAnchor(this.visual, (double)25);
-		AnchorPane.setTopAnchor(this.visual, (double)100);
-		AnchorPane.setBottomAnchor(this.visual, (double)5);
-		
-		splitAnchor.getChildren().add(this.visual);		
+		return this.animationPane;
 	}
 	
 	@Override
@@ -95,12 +98,12 @@ public class WarehouseSimulationController implements IGui {
 	@FXML
 	public void handleSimulation()
 	{
-		if (validInput())
+		if (isValidInput())
 			// This is dumb, fix maybe?
 			this.mainApp.getController().startSimulation();
 	}
 	
-	private boolean validInput()
+	private boolean isValidInput()
 	{
 		String alrt = "";
 		if (this.simTimeField.getText() == null || this.simTimeField.getText().length() == 0)

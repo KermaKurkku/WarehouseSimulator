@@ -25,12 +25,7 @@ public class CollectingStation {
         this.id = i++;
         this.orders = new PriorityQueue<Order>();
         this.schedulingType = schedulingType;
-        this.collectors = new Collector[collectors];
-
-        for (int i = 0; i < collectors; i++)
-        {
-            this.collectors[i] = new Collector(this.schedulingType);
-        }
+        setCollectorCount(collectors);
 
     }
 
@@ -70,14 +65,29 @@ public class CollectingStation {
         this.orders.add(order);
     }
 
-    public int getOrderAmount()
+    public int getOrderCount()
     {
         return this.orders.size();
+    }
+    
+    public int getCollectorCount()
+    {
+    	return this.collectors.length;
     }
 
     public EventType getType()
     {
         return this.schedulingType;
+    }
+    
+    public void setCollectorCount(int count)
+    {
+    	this.collectors = new Collector[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            this.collectors[i] = new Collector(this.schedulingType);
+        }
     }
 
     public boolean openCollectors()

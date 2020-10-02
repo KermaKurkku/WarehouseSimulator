@@ -4,11 +4,17 @@ import simulator.view.IGui;
 import simulator.model.IMotor;
 import simulator.model.Motor;
 
-public class Controller implements IController{
+public class SimulationController implements IController{
 	private IMotor motor;
 	private IGui gui;
 	
-	public Controller(IGui gui)
+	public SimulationController()
+	{
+
+	}
+	
+	@Override
+	public void setGUI(IGui gui)
 	{
 		this.gui = gui;
 	}

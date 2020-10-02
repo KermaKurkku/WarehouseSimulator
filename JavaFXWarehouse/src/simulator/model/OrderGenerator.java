@@ -94,6 +94,11 @@ public class OrderGenerator {
         }
         
     }
+    
+    public void setStations(CollectingStation[] stations)
+    {
+    	this.stations = stations;
+    }
 
 
 }

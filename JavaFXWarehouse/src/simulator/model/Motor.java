@@ -3,7 +3,7 @@ package simulator.model;
 import eduni.distributions.*;
 import simulator.controller.IController;
 import simulator.model.Trace.Level;
-import simulator.util.NumberFormatter;
+ import simulator.util.NumberFormatter;
 
 //TODO javadoc
 
@@ -13,7 +13,7 @@ public class Motor extends Thread implements IMotor{
     
     private IController controller;
     
-    private int amountOfStations = 5;
+    private int stationCount = 3;
 
     private int completedOrders = 0;
     private int lateOrders = 0;
@@ -29,26 +29,34 @@ public class Motor extends Thread implements IMotor{
     private Normal orderVariance = new Normal(3,4, (long)(System.nanoTime()*Math.PI)); // default values
 
     // TODO be able to set amount of colletors from outside
+    public Motor()
+    {
+    	this.clock = Clock.getInstance();
+        this.router = WarehouseRouter.getInstance();
+        this.router.setMotor(this);
+        this.generator = new OrderGenerator(new Normal(0.1, 0.15), this, stations);
+        this.eList = new EventList();
+    }
+    
     public Motor(IController controller)
     {
     	this.controller = controller;
     	
-        stations = new CollectingStation[amountOfStations];
-        int collectors = 2;
-        for (int i = 0; i < stations.length; i++)
-        {
-            stations[i] = new CollectingStation(this, EventType.COLL, collectors);
-            collectors++;
-        }
-        
-
-        clock = Clock.getInstance();
-        router = WarehouseRouter.getInstance();
-        router.setMotor(this);
+        setCollectingStationCount(this.stationCount);
+      
+        this.clock = Clock.getInstance();
+        this.router = WarehouseRouter.getInstance();
+        this.router.setMotor(this);
         this.generator = new OrderGenerator(new Normal(0.1, 0.15), this, stations);
         this.eList = new EventList();
-        this.generator.initializeOrders(15);
         
+        
+    }
+    
+    // For testing purposes
+    public void generateOrders(int num)
+    {
+    	this.generator.createOrders(num);
     }
 
     @Override
@@ -71,6 +79,7 @@ public class Motor extends Thread implements IMotor{
 
     public void run()
     {
+    	generateOrders(15);
         while(stillSimulating())
         {
             if (currentTime() == -1) break; // If EventList is empty
@@ -154,6 +163,20 @@ public class Motor extends Thread implements IMotor{
     {
         this.orderVariance = new Normal(mean, variance);
     }
+    
+    public void setCollectingStationCount(int count)
+    {
+    	this.stations = new CollectingStation[count];
+    	
+    	int collectors = 2; // Placeholder add possibility of changing collector count
+        for (int i = 0; i < stations.length; i++)
+        {
+            stations[i] = new CollectingStation(this, EventType.COLL, collectors);
+            collectors++;
+        }
+        
+        this.generator.setStations(this.stations);
+    }
 
     private void getCompletedOrders()
     {
@@ -198,6 +221,61 @@ public class Motor extends Thread implements IMotor{
         Trace.results("Orders left uncompleted: ", (router.getTotalOrders() - this.completedOrders));
         Trace.results("Average time of orders completed orders: ", (Order.getSumTime() / (double)this.completedOrders));
         Trace.results("Late orders", this.lateOrders);
+    }
+    
+    
+    // For visualization
+    /**
+     * Returns the amount of CollectingStaitons
+     * @return int amount of orders
+     */
+	@Override
+	public int getCollectingStationCount() {
+		return this.stations.length;
+	}
+
+	/**
+	 * Returns the amount of orders in each CollectingStationg
+	 * @return int[] amount of orders in each station as list
+	 */
+	@Override
+	public int[] getStationOrdersCount() {
+		int[] orders = new int[this.stations.length];
+		for (int i = 0; i < this.stations.length; i++)
+		{
+			orders[i] = this.stations[i].getOrderCount();
+		}
+		
+		return orders;
+	}
+
+	/**
+	 * Returns the amount of collectors in each CollectingStaiton
+	 * @return int[] amount of collectors in each station as list
+	 */
+	@Override
+	public int[] getStationCollectorCount() {
+		int[] collectors = new int[this.stations.length];
+		for (int i = 0; i < this.stations.length;i++)
+		{
+			collectors[i] = this.stations[i].getCollectorCount();
+		}
+		
+		return collectors;
+	}
+
+	/**
+	 * Returns the amount of orders in the routers queue
+	 * @return int amount of orders in routers queue
+	 */
+	@Override
+	public int getRouterOrdersCount() {
+		return router.getOrderCount();
+	}
+    
+    public CollectingStation[] getStations()
+    {
+    	return this.stations;
     }
 
 }
