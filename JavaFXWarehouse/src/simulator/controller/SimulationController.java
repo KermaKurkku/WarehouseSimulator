@@ -1,6 +1,7 @@
 package simulator.controller;
 
 import simulator.view.IGui;
+import javafx.application.Platform;
 import simulator.model.IMotor;
 import simulator.model.Motor;
 
@@ -25,7 +26,8 @@ public class SimulationController implements IController{
 		motor = new Motor(this);
 		motor.setSimulatorTime(this.gui.getTime());
 		motor.setDelay(this.gui.getDelay());
-		gui.getVisual();
+		gui.getVisual().drawRouter();
+		gui.getVisual().drawCollectingStations(motor.getCollectingStationCount());
 		((Thread)motor).start();
 	}
 	
@@ -48,9 +50,13 @@ public class SimulationController implements IController{
 	}
 
 	@Override
-	public void visualizeOrder() {
-		// TODO Auto-generated method stub
-		
+	public void visualizeOrders() {
+		Platform.runLater(new Runnable(){
+			public void run(){
+				gui.getVisual().drawOrders(motor.getStationOrdersCount());
+				gui.getVisual().drawRouterOrders(motor.getRouterOrdersCount());
+			}
+		});
 	}
 	
 	

@@ -11,6 +11,7 @@
     // DONE motor method int getRouterOrdersCount() - returns the amount of orders on router
     // DONE Custom dataStructure for CollectingStation graphics?
        
+// TODO make it possible to change the time when orders are routed
 
 // DONE change the colletingStations to use a single enum
 // DONE change order to use collectingStation to set the location of the order 

@@ -34,20 +34,19 @@ public class Motor extends Thread implements IMotor{
     	this.clock = Clock.getInstance();
         this.router = WarehouseRouter.getInstance();
         this.router.setMotor(this);
-        this.generator = new OrderGenerator(new Normal(0.1, 0.15), this, stations);
+        this.generator = new OrderGenerator(new Normal(0.1, 0.15), this);
         this.eList = new EventList();
     }
     
     public Motor(IController controller)
     {
     	this.controller = controller;
-    	
-        setCollectingStationCount(this.stationCount);
       
         this.clock = Clock.getInstance();
         this.router = WarehouseRouter.getInstance();
         this.router.setMotor(this);
-        this.generator = new OrderGenerator(new Normal(0.1, 0.15), this, stations);
+        this.generator = new OrderGenerator(new Normal(0.1, 0.15), this);
+        setCollectingStationCount(this.stationCount);
         this.eList = new EventList();
         
         
@@ -68,6 +67,7 @@ public class Motor extends Thread implements IMotor{
     @Override
     public void setDelay(long delay)
     {
+    	delay *= 100;
     	this.delay = delay;
     }
     
@@ -75,11 +75,12 @@ public class Motor extends Thread implements IMotor{
     public long getDelay()
     {
     	return this.delay;
+    	
     }
 
     public void run()
     {
-    	generateOrders(15);
+    	this.generator.initializeOrders(30);
         while(stillSimulating())
         {
             if (currentTime() == -1) break; // If EventList is empty
@@ -90,6 +91,12 @@ public class Motor extends Thread implements IMotor{
         }
         Trace.out(Level.WAR, "Simulation over");
         reportResults();
+       
+    }
+    
+    public void stopSimulation()
+    {
+    	this.clock.setTime(simTime);
     }
 
     public void runBEvents()
@@ -109,6 +116,7 @@ public class Motor extends Thread implements IMotor{
                 s.collectOrder();
             }
         }
+        this.controller.visualizeOrders();
     }
 
     public void runEvent(Event e)
@@ -117,6 +125,7 @@ public class Motor extends Thread implements IMotor{
         switch (e.getType())
         {
             case ROUT:  router.routeOrders(stations);
+            			this.controller.visualizeOrders();
                         break;
             case COLL:  getCompletedOrders();
                         break;
@@ -144,7 +153,6 @@ public class Motor extends Thread implements IMotor{
     
     private void delay()
     {
-    	Trace.out(Level.INFO, "Delay: "+ this.delay);
     	try
     	{
     		sleep(this.delay);

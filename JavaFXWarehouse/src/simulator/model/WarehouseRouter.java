@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 public class WarehouseRouter {
     private static WarehouseRouter INSTANCE;
 
-    private Uniform generator = new Uniform(1, 6);  // Default values
+    private Uniform generator = new Uniform(10, 25);  // Default values
     private Motor motor;
     private PriorityQueue<Order> orders;
 
@@ -33,7 +33,16 @@ public class WarehouseRouter {
     // Routes the orders by type
     public void routeOrders(CollectingStation[] stations)
     {
-        CollectingStation routTo;
+       
+        
+        if (Clock.getInstance().getTime() > (motor.getSimTime() - 1))
+        {
+        	for (int i = 0; i < this.orders.size(); i++)
+        	{
+        		routeOrder(stations);
+        	}
+        }
+        
         for (int i = 0; i < this.generator.sample(); i++)
         {
             if (isEmpty()){
@@ -41,20 +50,25 @@ public class WarehouseRouter {
                 break;
             } 
             
+            routeOrder(stations); 
             
-            routTo = findStation(orders.peek().getStation(), stations);
-            if (routTo == null)
-            {
-                Trace.out(Level.ERR, "No collecting station found for type");
-                orders.remove();
-                continue;
-            }
-            // TODO add trace for adding order - here or in collectingStation
-            routTo.addOrder(orders.poll());
         }
+        // TODO be able to change the generation of new event
         motor.newEvent(new Event(EventType.ROUT, Clock.getInstance().getTime()+(
-            generator.sample()*6/100 // Random numbers 
+            generator.sample()*4/100 // Random numbers 
         )));
+    }
+    
+    private void routeOrder(CollectingStation[] stations)
+    {
+    	 CollectingStation routTo = findStation(orders.peek().getStation(), stations);
+        if (routTo == null)
+        {
+            Trace.out(Level.ERR, "No collecting station found for type");
+            orders.remove();
+        }
+        // TODO add trace for adding order - here or in collectingStation
+        routTo.addOrder(orders.poll());
     }
 
     public void addOrder(Order order)

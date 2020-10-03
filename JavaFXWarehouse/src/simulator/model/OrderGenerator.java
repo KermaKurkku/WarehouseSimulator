@@ -21,12 +21,11 @@ public class OrderGenerator {
      * Constructor for the Order generator
      * @param generator Number generator for generating order collect times
      */
-    public OrderGenerator(ContinuousGenerator generator, Motor motor, CollectingStation[] stations)
+    public OrderGenerator(ContinuousGenerator generator, Motor motor)
     {
         this.router = WarehouseRouter.getInstance();
         this.motor = motor;
         this.generator = generator;
-        this.stations = stations;
     }
 
     /**

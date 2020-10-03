@@ -32,9 +32,11 @@ public class MainApp extends Application{
 	private IController controller;
 	
 	private LinkedList<Rectangle> list;
-	
+		
 	@Override
 	public void start(Stage primaryStage) {
+		Trace.setTraceLevel(Level.INFO);
+		Order.setSortType(SortType.FIFO);
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Warehouse Simulation");
 		this.controller = new SimulationController();
@@ -85,36 +87,22 @@ public class MainApp extends Application{
 			warehouseGUIController.setMainApp(this);
 			
 			// Dis Be shit
-			Button testin = new Button();
-			testin.setText("Add");
-			testin.setOnAction((event) -> {
-				if (list.isEmpty())
-				{
-					list.add(new Rectangle(200, 200, 5, 20));
-				} else
-				{
-					list.add(new Rectangle(list.getLast().getX()-10, list.getLast().getY(),
-							5, 20));
-					System.out.println(list.size());
-				}
-				list.getLast().setFill(Color.ORANGE);
-			});
-			
-			Button testin2 = new Button();
-			testin2.setText("Yeet");
-			testin2.setOnAction((event) -> {
-				if (this.list.isEmpty())
-				{
-					return;
-				}
-				warehouseGUIController.getPane().getChildren().remove(this.list.getLast());
-				this.list.removeLast();
-				
-			});
-			BorderPane.setAlignment(testin, Pos.CENTER_LEFT);
-			this.rootLayout.setBottom(testin);
-			BorderPane.setAlignment(testin2, Pos.CENTER);
-			this.rootLayout.setLeft(testin2);
+//			Button testin = new Button();
+//			testin.setText("Add");
+//			testin.setOnAction((event) -> {
+//				
+//			});
+//			
+//			Button testin2 = new Button();
+//			testin2.setText("Yeet");
+//			testin2.setOnAction((event) -> {
+//				
+//				
+//			});
+//			BorderPane.setAlignment(testin, Pos.CENTER_LEFT);
+//			this.rootLayout.setBottom(testin);
+//			BorderPane.setAlignment(testin2, Pos.CENTER);
+//			this.rootLayout.setLeft(testin2);
 			
 			this.controller.setGUI(warehouseGUIController);
 			

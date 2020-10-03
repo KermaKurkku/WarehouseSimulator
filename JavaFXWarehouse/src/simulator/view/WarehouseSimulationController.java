@@ -7,6 +7,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -53,14 +54,12 @@ public class WarehouseSimulationController implements IGui {
 	private void initialize()
 	{
 		
-		this.visual = new Visualization(550, 450, this.animationPane);
+		this.visual = new Visualization(844, 506, this.animationPane);
 		AnchorPane.setLeftAnchor(this.visual, (double)25);
 		AnchorPane.setRightAnchor(this.visual, (double)25);
 		AnchorPane.setTopAnchor(this.visual, (double)100);
 		AnchorPane.setBottomAnchor(this.visual, (double)5);
 		splitAnchor.getChildren().add(this.visual);	
-		System.out.println(this.visual.getHeight());
-		this.visual.drawCollectingStations(3);
 	}
 	
 	public void setMainApp(MainApp mainApp)

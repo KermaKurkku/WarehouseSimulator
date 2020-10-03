@@ -12,5 +12,5 @@ public interface IController {
 	
 	// Interface for the motor
 	public void showEndTime();
-	public void visualizeOrder();
+	public void visualizeOrders();
 }
