@@ -30,11 +30,20 @@ public class SimulationController implements IController{
 		Clock.getInstance().setTime(0);
 		gui.getVisual().clear();
 		motor = new Motor(this);
+		motor.clearRouter();
 		motor.setSimulatorTime(this.gui.getTime());
 		motor.setDelay(this.gui.getDelay());
 		gui.getVisual().drawRouter();
-		gui.getVisual().drawCollectingStations(motor.getCollectingStationCount());
+		gui.getVisual().drawCollectingStations(motor.getCollectingStationCount(), motor.getStationCollectorCount());
 		((Thread)motor).start();
+		
+	}
+
+	@Override
+	public void stopSimulation()
+	{
+		motor.stopSimulation();
+		
 	}
 	
 	@Override
@@ -62,8 +71,15 @@ public class SimulationController implements IController{
 	}
 
 	@Override
-	public void showTime(double time) {
-		this.gui.setSimTime(time);
+	public synchronized void showTime(double time) {
+		Platform.runLater(new Runnable()
+		{
+			public void run()
+			{
+				gui.setSimTime(time);
+			}
+		});
+		
 		
 	}
 
@@ -75,6 +91,7 @@ public class SimulationController implements IController{
 			{
 				gui.getVisual().drawOrders(motor.getStationOrdersCount());
 				gui.getVisual().drawRouterOrders(motor.getRouterOrdersCount());
+				gui.getVisual().collectingCollectors(motor.getCollectingCollectors());
 			}
 		});
 	}

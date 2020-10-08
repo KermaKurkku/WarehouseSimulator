@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="warehouse.simulator.view.SimulationEditDialogController">
    <children>
@@ -26,70 +27,41 @@
                 <RowConstraints minHeight="90.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="90.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="90.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="90.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="90.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="90.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="90.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="CollectingStations">
                      <GridPane.margin>
                         <Insets left="20.0" />
                      </GridPane.margin></Label>
-                  <Label text="Minimum orders" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets left="20.0" />
-                     </GridPane.margin></Label>
-                  <Label text="Order Generation variance" GridPane.rowIndex="3">
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding></Label>
-                  <Label text="Routing count variance" GridPane.rowIndex="4">
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </Label>
-                  <Label text="Order sorting type" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="20.0" />
-                     </GridPane.margin>
-                  </Label>
                   <TextField fx:id="stationCountField" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets left="20.0" right="20.0" />
                      </GridPane.margin>
                   </TextField>
+                  <Label text="Order sorting type" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <ComboBox fx:id="sortTypeList" prefWidth="150.0" promptText="SortType" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <Label text="Minimum orders" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin></Label>
                   <TextField fx:id="minimumOrderField" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets left="20.0" right="20.0" />
                      </GridPane.margin>
                   </TextField>
-                  <VBox prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                     <children>
-                        <Label text="Minimum:">
-                           <VBox.margin>
-                              <Insets left="20.0" />
-                           </VBox.margin>
-                        </Label>
-                        <TextField fx:id="minimumOrderVarianceField">
-                           <VBox.margin>
-                              <Insets left="20.0" right="20.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <Label text="Maximum:">
-                           <VBox.margin>
-                              <Insets left="20.0" />
-                           </VBox.margin>
-                        </Label>
-                        <TextField fx:id="maximumOrderVarianceField">
-                           <VBox.margin>
-                              <Insets left="20.0" right="20.0" />
-                           </VBox.margin>
-                        </TextField>
-                     </children>
+                  <Label text="Routing count variance" GridPane.rowIndex="3">
                      <padding>
-                        <Insets top="10.0" />
+                        <Insets left="20.0" />
                      </padding>
-                  </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  </Label>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
                         <Label text="Minimum:">
                            <VBox.margin>
@@ -116,14 +88,82 @@
                         <Insets top="10.0" />
                      </padding>
                   </VBox>
-                  <ComboBox fx:id="sortTypeList" prefWidth="150.0" promptText="SortType" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <Label text="Order collect time variance" GridPane.rowIndex="4">
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </Label>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <children>
+                        <Label text="Median:">
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="medianOrderCollectTimeVariance">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label text="Variance:">
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="varianceOrderCollectTimeVariance">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </VBox>
+                  <Label text="Order Generation variance" GridPane.rowIndex="5">
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </Label>
+                  <VBox prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <children>
+                        <Label text="Median:">
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="medianOrderVarianceField">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label text="Variance:">
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="varianceOrderVarianceField">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </VBox>
                </children>
             </GridPane>
          </content>
       </ScrollPane>
+      <Button fx:id="reset" mnemonicParsing="false" onAction="#handleDefault" text="Reset to defaults" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Button>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="25.0">
         <buttons>
-          <Button fx:id="cancelBtn" mnemonicParsing="false" text="Cancel" />
+          <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
             <Button fx:id="okBtn" mnemonicParsing="false" onAction="#handleOK" text="OK" />
         </buttons>
       </ButtonBar>

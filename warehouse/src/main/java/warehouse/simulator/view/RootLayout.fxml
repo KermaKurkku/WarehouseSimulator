@@ -14,9 +14,11 @@
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="Settings">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleEdit" text="Edit settings" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleSaveAs" text="Save settings as" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleLoad" text="Load settings" />
                </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

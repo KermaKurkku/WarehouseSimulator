@@ -3,24 +3,26 @@ package warehouse.simulator.view;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+
 import warehouse.simulator.view.animation.StationWithList;
+import warehouse.simulator.view.animation.CollectingStationVisual;
 
 // Figre out how to draw the visualization
 public class Visualization extends Pane{
-	private StationWithList[] collectingStations;
+	private CollectingStationVisual[] collectingStations;
 	private StationWithList router;
 	private Pane pane;
 	
-	public Visualization(int w, int h, Pane pane)
+	public Visualization(int w, int h)
 	{
 		super.setWidth(w);
 		super.setHeight(h);
-		this.pane = pane;
 		
 		// Fix later
 //		Image img = null;
@@ -42,29 +44,32 @@ public class Visualization extends Pane{
 
 	public void clear()
 	{
-		this.pane.getChildren().removeAll();
+		this.getChildren().removeAll(this.getChildren());
 	}
 	
 	public void drawRouter()
 	{
-		this.router = new StationWithList(new Rectangle(150, this.pane.getHeight()/2-10, 20, 20));
-		this.pane.getChildren().add(this.router.getMainRectangle());
+		this.router = new StationWithList(new Rectangle(200, this.getHeight()/2-30, 20, 20), "Router");
+		this.getChildren().addAll(this.router.getMainRectangle(), this.router.getText());
 		
 	}
 	
-	public void drawCollectingStations(int amount)
+	public void drawCollectingStations(int stationCount, int[] collectorCount)
 	{
 		Rectangle rect;
-		this.collectingStations = new StationWithList[amount];
-		double height = this.getHeight() - 50;
+		this.collectingStations = new CollectingStationVisual[stationCount];
+		double height = this.getHeight() - 100;
 		
 		for (int i = 0; i < this.collectingStations.length; i++)
 		{
-			this.collectingStations[i] = new StationWithList(
+			this.collectingStations[i] = new CollectingStationVisual(
 					new Rectangle(this.getWidth()/2, 
 					(25 + (height*((double)i/(this.collectingStations.length-1)))), 
-					40, 15));
-			this.pane.getChildren().add(this.collectingStations[i].getMainRectangle());
+					40, 15), collectorCount[i]);
+			this.collectingStations[i].drawCollectors();
+			this.getChildren().add(this.collectingStations[i].getMainRectangle());
+			this.getChildren().addAll(this.collectingStations[i].getCollectors());
+			this.getChildren().add(this.collectingStations[i].getText());
 		}
 	}
 	
@@ -92,18 +97,26 @@ public class Visualization extends Pane{
 		this.router.drawSubRectangles(count);
 		addRectangles(this.router.getSubRectangles());
 	}
+
+	public void collectingCollectors(List<int[]> list)
+	{
+		for (int i = 0; i < list.size(); i++)
+		{
+			this.collectingStations[i].setCollecting(list.get(i));
+		}
+	}
 	
 	private void removeRectangles(Rectangle[] remove)
 	{
 		for (Rectangle rect : remove)
 		{
-			this.pane.getChildren().remove(rect);
+			this.getChildren().remove(rect);
 		}
 	}
 	
 	private void addRectangles(Rectangle[] add)
 	{
-		this.pane.getChildren().addAll(add);
+		this.getChildren().addAll(add);
 	}
 
 }

@@ -10,6 +10,7 @@ public class Collector {
     private static int id = 1;
     private double finishTime = -1;
     private int collectedOrders = 0;
+    private double activeTime = 0;
 
 
     public Collector(EventType type) 
@@ -18,6 +19,11 @@ public class Collector {
         id++;
     };
 
+    /**
+     * Makes the collector start collecting
+     * @param ordr Order to be collected
+     * @param finishTime Time when the collector finishes
+     */
     public void startCollecting(Order ordr, double finishTime)
     {
         this.collecting = true;
@@ -32,6 +38,10 @@ public class Collector {
         Trace.out(Level.INFO, "Collector "+ this.name+" started collecting.");
     }
 
+    /**
+     * Makes the collector stop collecting
+     * @return Order that was collected
+     */
     public Order stopCollecting()
     {
         if (this.order == null) // Checks if no order is found
@@ -41,6 +51,7 @@ public class Collector {
         }
         this.collecting = false;
         Order returnOrder = this.order;
+        this.activeTime += this.order.getCollectionTime();
         this.order = null;
         this.finishTime = -1;
         Trace.out(Level.INFO, "Collector "+this.name+" has finished collecting.");
@@ -48,6 +59,10 @@ public class Collector {
         return returnOrder;
     }
 
+    /**
+     * Returns if the collector is collecting
+     * @return true if collecting otherwise false
+     */
     public boolean collecting()
     {
         return this.collecting;
@@ -71,6 +86,11 @@ public class Collector {
     public int getCollectedOrders()
     {
         return this.collectedOrders;
+    }
+
+    public double getActivePercentage()
+    {
+        return this.activeTime/Clock.getInstance().getTime();
     }
 
 

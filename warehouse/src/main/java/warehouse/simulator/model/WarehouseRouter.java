@@ -30,6 +30,11 @@ public class WarehouseRouter {
         return INSTANCE;
     }
 
+    public void setRouteVariance(double min, double max)
+    {
+        this.generator = new Uniform(min,max);
+    }
+
     // Routes the orders by type
     public void routeOrders(CollectingStation[] stations)
     {
@@ -39,8 +44,11 @@ public class WarehouseRouter {
         {
         	for (int i = 0; i < this.orders.size(); i++)
         	{
-        		routeOrder(stations);
-        	}
+                routeOrder(stations);
+                motor.visualize();
+                motor.delay();
+            }
+            return;
         }
         
         for (int i = 0; i < this.generator.sample(); i++)
@@ -49,8 +57,10 @@ public class WarehouseRouter {
                 Trace.out(Level.ERR, "No orders in router!");
                 break;
             } 
-            
             routeOrder(stations); 
+            motor.visualize();
+            motor.delay();
+
             
         }
         // TODO be able to change the generation of new event
@@ -59,6 +69,7 @@ public class WarehouseRouter {
         )));
     }
     
+    // Mostly for testing purposes
     private void routeOrder(CollectingStation[] stations)
     {
     	CollectingStation routTo = findStation(orders.peek().getStation(), stations);
@@ -116,9 +127,10 @@ public class WarehouseRouter {
         this.motor = motor;
     }
     
-    public void Empty()
+    public void empty()
     {
-    	this.orders = new PriorityQueue<Order>();
+        this.orders = new PriorityQueue<Order>();
+        this.totalOrders = 0;
     }
 
 }

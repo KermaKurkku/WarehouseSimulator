@@ -1,6 +1,10 @@
 package warehouse.simulator.view;
 
+import java.io.File;
 import java.text.DecimalFormat;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -11,7 +15,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import warehouse.simulator.MainApp;
+import warehouse.simulator.util.JSONReader;
 import warehouse.simulator.util.NumberFormatter;
 
 // TODO javadoc
@@ -40,6 +46,21 @@ public class WarehouseSimulationController implements IGui {
 	
 	@FXML
 	private Pane animationPane;
+
+	@FXML
+	private Text stationCountText;
+	@FXML
+	private Text collectorCountText;
+	@FXML
+	private Text sortTypeText;
+	@FXML
+	private Text minOrderText;
+	@FXML
+	private Text routingVarianceText;
+	@FXML
+	private Text collectTimeVarianceText;
+	@FXML
+	private Text orderGenVariance;
 	
 	private Visualization visual;	
 	
@@ -55,12 +76,14 @@ public class WarehouseSimulationController implements IGui {
 	private void initialize()
 	{
 		
-		this.visual = new Visualization(844, 506, this.animationPane);
+		this.visual = new Visualization(767, 500);
 		AnchorPane.setLeftAnchor(this.visual, (double)25);
 		AnchorPane.setRightAnchor(this.visual, (double)25);
 		AnchorPane.setTopAnchor(this.visual, (double)100);
 		AnchorPane.setBottomAnchor(this.visual, (double)5);
 		splitAnchor.getChildren().add(this.visual);	
+		
+		setSettingsText();
 	}
 	
 	public void setMainApp(MainApp mainApp)
@@ -111,6 +134,12 @@ public class WarehouseSimulationController implements IGui {
 			this.mainApp.getController().startSimulation();
 		
 	}
+
+	@FXML
+	public void handleStop()
+	{
+		this.mainApp.getController().stopSimulation();
+	}
 	
 	@FXML
 	public void handleFaster()
@@ -124,6 +153,37 @@ public class WarehouseSimulationController implements IGui {
 	{
 		System.out.println("Slower");
 		this.mainApp.getController().slower();
+	}
+
+	public void setSettingsText()
+	{
+		File f = new File(System.getProperty("user.dir")+"/src/main/resources/options/settings.json");
+		if (!f.exists())
+			f = new File(System.getProperty("user.dir")+"/src/main/resources/options/default.json");
+		
+		JSONObject obj = JSONReader.readJSON(f);
+		this.stationCountText.setText((String)obj.get("stationCount"));
+		JSONArray arr = (JSONArray)obj.get("collectors");
+		String collString = "";
+		for (int i = 0; i < arr.size(); i++)
+		{
+			if (i != arr.size()-1)
+			{
+				collString +=  (String)arr.toArray()[i]+", ";
+			} else
+			{
+				collString += (String)arr.toArray()[i];
+			}
+		}
+		this.collectorCountText.setText(collString);
+		this.sortTypeText.setText((String)obj.get("sortType"));
+		this.minOrderText.setText((String)obj.get("minimumOrders"));
+		this.routingVarianceText.setText("min: "+(String)obj.get("minRouteVariance")
+			+", max: "+(String)obj.get("maxRouteVariance"));
+		this.collectTimeVarianceText.setText("median: "+(String)obj.get("medianOrderCollectVariance")
+			+", var: "+(String)obj.get("varianceOrderCollectVariance"));
+		this.orderGenVariance.setText("median: "+(String)obj.get("medianOrderVariance")
+			+", var: "+(String)obj.get("varianceOrderVariance"));
 	}
 	
 	private boolean isValidInput()

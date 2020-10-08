@@ -10,47 +10,58 @@
     // DONE motor method int[] getStationCollectorCount() - returns the amount of collecors on each station
     // DONE motor method int getRouterOrdersCount() - returns the amount of orders on router
     // DONE Custom dataStructure for CollectingStation graphics?
-// TODO draw collectors
-    // TODO motor method int[][] getCollectorsCollecting() - returns list of lists with count of collectors that are collecting
+// DONE draw collectors
+    // DONE motor method int[][] getCollectorsCollecting() - returns list of lists with count of collectors that are collecting
 
-// TODO Edit window
+7.10 //DONE
+
+// DONE Edit window
     // Info:
         // CollectingStationCount: int
-            // TODO figure out how to add collectors to each station
+            // DONE figure out how to add collectors to each station
         // minOrders: int
         // orderGenerationVariance: int, int
             // two TextFields
         // WarehouseRouter route variance: int, int
             // Two TextFields
 
-// TODO save parameters in a json file or smth
-// Read data on creation of motor
+// DONE save parameters in a json file or smth
+// DONE Read data on creation of motor
+// DONE be able to reset to default
         
 
-// TODO figure out why stations are not detected after restarts
+// DONE figure out why stations are not detected after restarts
 
 // DONE make timeField show the time
 // DONE make faster and slower buttons work
-// TODO make orders go into two rows when over 15?
+// DONE make orders go into two rows when over 15?
        
 // DONE change the colletingStations to use a single enum
 // DONE change order to use collectingStation to set the location of the order 
-// TODO make creating collectingStations dynamic
+// DONE make creating collectingStations dynamic
 
-// TODO add loading bay
-// TODO keep a track of collected orders and stuff
+8.10 //TODO
 
-// TODO print the amount of collected orders on collectors
 
-// TODO add more sorting types
+// DONE save the amount of collected orders on collectors
+// DONE save the utilization percentage of collectors
 
-// TODO refractor sources to be clearer
-// DONE Add javafx interface
-// TODO Make changing the amount of collectors possible
-// TODO Make it possible to increase the amount of stations
 
 // TODO log other collectiong statistics
 // TODO Add saving to database
+// TODO draw some nice graphs
 
+// TODO add loading bay
+// TODO nice animation for the cars driving away
+// TODO warehouse image on base
+
+// TODO popup for displaying results?
+
+// TODO CSS
+
+
+
+// TODO add more sorting types
+// TODO refractor sources to be clearer
 // TODO Make simulation go by days not hours, set opening and closing times
 // TODO set time in 24h format?

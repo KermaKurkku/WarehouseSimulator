@@ -26,15 +26,16 @@ public class MainApp extends Application{
 	private BorderPane rootLayout;
 	
 	private IController controller;
+	private WarehouseSimulationController whSimController;
 			
 	@Override
 	public void start(Stage primaryStage) {
-		Trace.setTraceLevel(Level.INFO);
+		Trace.setTraceLevel(Level.WAR);
 		Order.setSortType(SortType.FIFO);
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Warehouse Simulation");
 		this.controller = new SimulationController();
-				
+
 		initRootLayout();
 		
 		showSimulation();
@@ -79,10 +80,10 @@ public class MainApp extends Application{
 			this.rootLayout.setCenter(simulation);
 			
 			// Give the controller access to MainApp
-			WarehouseSimulationController warehouseGUIController = loader.getController();
-			warehouseGUIController.setMainApp(this);
+			this.whSimController = loader.getController();
+			this.whSimController.setMainApp(this);
 			
-			this.controller.setGUI(warehouseGUIController);
+			this.controller.setGUI(whSimController);
 
 		} catch(IOException e)
 		{
@@ -105,7 +106,9 @@ public class MainApp extends Application{
 			dialogStage.setScene(scene);
 
 			SimulationEditDialogController controller = loader.getController();
-			dialogStage.show();
+			controller.setDialogStage(dialogStage);
+			dialogStage.showAndWait();
+			updateSettingsText();
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -127,6 +130,11 @@ public class MainApp extends Application{
 		Trace.setTraceLevel(Level.INFO);
 		Order.setSortType(SortType.SIZE);
         launch(args);
-    }
+	}
+	
+	public void updateSettingsText()
+	{
+		this.whSimController.setSettingsText();
+	}
 	
 }

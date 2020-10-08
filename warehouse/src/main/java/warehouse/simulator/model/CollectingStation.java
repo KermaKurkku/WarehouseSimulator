@@ -12,23 +12,27 @@ public class CollectingStation {
     private Motor motor;
 
     private int id;
-    private static int i = 1;
 
     private PriorityQueue<Order> orders;
     private EventType schedulingType;
 
     private Collector[] collectors;
 
-    public CollectingStation(Motor motor, EventType schedulingType, int collectors)
+    public CollectingStation(Motor motor, EventType schedulingType, int collectors, int id)
     {
         this.motor = motor;
-        this.id = i++;
+        this.id = id;
         this.orders = new PriorityQueue<Order>();
         this.schedulingType = schedulingType;
         setCollectorCount(collectors);
 
     }
 
+    /**
+     * Goes through the list of collectors and checks if they are collecting
+     * If not gives the collector the order to collect and starts collecting
+     * Creates an event for the ending of the collection
+     */
     public void collectOrder()
     {
         double collectingTime = 0;
@@ -46,6 +50,11 @@ public class CollectingStation {
         
     }
 
+    /**
+     * Goes through the list of collectors and checks if collector is colleting
+     * and if it's finish time is the same as the current time
+     * @return collected Order
+     */
     public Order removeCompleted()
     {        
         for (Collector c : collectors)
@@ -80,6 +89,10 @@ public class CollectingStation {
         return this.schedulingType;
     }
     
+    /**
+     * Creates the specified amount of collectors
+     * @param count Amount of collectors to be created
+     */
     public void setCollectorCount(int count)
     {
     	this.collectors = new Collector[count];
@@ -90,6 +103,10 @@ public class CollectingStation {
         }
     }
 
+    /**
+     * Returns if the station has collectors that are not collecting
+     * @return True if open collectors exist, otherwise false
+     */
     public boolean openCollectors()
     {
         int collecting = 0;
@@ -105,6 +122,29 @@ public class CollectingStation {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Returns an array of collectors that are collecting. 
+     * The array is as long as there are collectors and 
+     * a 1 or a 0 will be placed into the array depending on
+     * if the collector is collecting or not
+     * @return Arrau of collecting collectors
+     */
+    public int[] getCollectingCollectors()
+    {
+        int[] collecting = new int[this.collectors.length];
+        for (int i = 0; i < this.collectors.length; i++)
+        {
+            if (this.collectors[i].collecting())
+            {
+                collecting[i] = 1; 
+            } else
+            {
+                collecting[i] = 0;
+            }
+        }
+        return collecting;
     }
 
     public boolean hasCompleted()
