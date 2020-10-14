@@ -7,21 +7,24 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import warehouse.simulator.MainApp;
 import warehouse.simulator.util.JSONReader;
-import warehouse.simulator.util.NumberFormatter;
 
-// TODO javadoc
-public class WarehouseSimulationController implements IGui {
+/**
+ * Class for handling the simulation view of the 
+ * simulator. Controls the visualization and inputs 
+ * of the simulator. 
+ * @author Jere Salmensaari
+ */
+public class WarehouseSimulationController implements ISimulationGui {
 	
 	@FXML
 	private TextField simTimeField;
@@ -40,12 +43,15 @@ public class WarehouseSimulationController implements IGui {
 	
 	@FXML
 	private TextField timeField;
+
+	@FXML
+	private TextField delayCurrentField;
+	
+	@FXML
+	private TextField nextLeaveTime;
 	
 	@FXML
 	private AnchorPane splitAnchor;
-	
-	@FXML
-	private Pane animationPane;
 
 	@FXML
 	private Text stationCountText;
@@ -61,72 +67,110 @@ public class WarehouseSimulationController implements IGui {
 	private Text collectTimeVarianceText;
 	@FXML
 	private Text orderGenVariance;
+
+	@FXML
+	private GridPane viewGrid;
 	
 	private Visualization visual;	
 	
 	private MainApp mainApp;
 	
-	public WarehouseSimulationController()
-	{
-		
-	}
-	
 	// Called after loading of fxml file
 	@FXML
+	/**
+	 * Initializes the visualization of the controller
+	 * and puts it into the gridpane.
+	 */
 	private void initialize()
 	{
 		
-		this.visual = new Visualization(767, 500);
+		this.visual = new Visualization(800, 500);
 		AnchorPane.setLeftAnchor(this.visual, (double)25);
 		AnchorPane.setRightAnchor(this.visual, (double)25);
 		AnchorPane.setTopAnchor(this.visual, (double)100);
 		AnchorPane.setBottomAnchor(this.visual, (double)5);
 		splitAnchor.getChildren().add(this.visual);	
+
+		GridPane.setMargin(this.visual, new Insets(16, 0, 22, 22));
+
+		viewGrid.add(this.visual, 0, 1, 2, 5);
 		
 		setSettingsText();
 	}
 	
+	/**
+     * Sets the reference to the application's MainApp.
+     * @param mainApp MainApp reference.
+     */
 	public void setMainApp(MainApp mainApp)
 	{
 		this.mainApp = mainApp;
 	}
 	
-	public Pane getPane()
-	{
-		return this.animationPane;
-	}
-	
 	@Override
+	/**
+	 * Return the visualization of the class.
+	 * @return visual Visualization of the class.
+	 */
 	public Visualization getVisual()
 	{
 		return this.visual;
 	}
 
 	@Override
+	/**
+	 * Returns the simulation time set for the motor in the GUI.
+	 * @return simulationTime Simulation time for the motor.
+	 */
 	public double getTime() {
 		return Double.parseDouble(this.simTimeField.getText());
 	}
 
 	@Override
+	/**
+	 * Returns the delay set for the motor in the GUI.
+	 * @return delay Delay time for the motor.
+	 */
 	public long getDelay() {
-		long delay = (long)(Double.parseDouble(this.speedTextField.getText()) *100);
+		long delay = (long)(Double.parseDouble(this.speedTextField.getText()));
 		return delay;
 	}
 	
 	@Override
+	/**
+	 * Sets the delay text in the GUI.
+	 * @param delay delay time in the motor.
+	 */
 	public void setDelayText(double speed)
 	{
-		DecimalFormat formatter = new DecimalFormat("#0,00");
-		this.speedTextField.setText(formatter.format(speed));
+		this.speedTextField.setText(speed+"");
 	}
 
 	@Override
+	/**
+	 * Sets current time in the GUI.
+	 * @param time Current time in the simulation.
+	 */
 	public void setSimTime(double time) {
 		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.timeField.setText(formatter.format(time));
 	}
+
+	@Override
+	/**
+	 * Sets next leave time field in the GUI.
+	 * @param nextTime Next leave time from the motor.
+	 */
+	public void setNextLeaveTime(int leave)
+	{
+		this.nextLeaveTime.setText(leave+"");
+	}
 	
 	@FXML
+	/**
+	 * Handles the activation of the simulate-button.
+	 * Starts the simulation.
+	 */
 	public void handleSimulation()
 	{
 		if (isValidInput())
@@ -136,25 +180,46 @@ public class WarehouseSimulationController implements IGui {
 	}
 
 	@FXML
+	/**
+	 * Handles the activation of the stop-button.
+	 * Calls the motor to stop the simulation
+	 */
 	public void handleStop()
 	{
 		this.mainApp.getController().stopSimulation();
 	}
 	
 	@FXML
+	/**
+	 * Handles the activation of the faster-button.
+	 * Lessens the delay of the motor.
+	 */
 	public void handleFaster()
 	{
 		System.out.println("Faster");
 		this.mainApp.getController().faster();
+		setDelayText(this.mainApp.getController().getDelay());
 	}
 	
 	@FXML
+	/**
+	 * Handles the activation of the slower-button.
+	 * Lenghtens the delay of the motor.
+	 */
 	public void handleSlower()
 	{
 		System.out.println("Slower");
 		this.mainApp.getController().slower();
+		setDelayText(this.mainApp.getController().getDelay());
 	}
 
+	/**
+	 * Sets the text in the settings preview window.
+	 * <p>
+	 * Reads the settings.json file and sets the information 
+	 * according to that. If settings.json does not exist,
+	 * loads default.json.
+	 */
 	public void setSettingsText()
 	{
 		File f = new File(System.getProperty("user.dir")+"/src/main/resources/options/settings.json");
@@ -186,6 +251,11 @@ public class WarehouseSimulationController implements IGui {
 			+", var: "+(String)obj.get("varianceOrderVariance"));
 	}
 	
+	/**
+	 * Checks if the input in the fields of the 
+	 * simulator are valid
+	 * @return True if input is valid, otherwise false.
+	 */
 	private boolean isValidInput()
 	{
 		String alrt = "";

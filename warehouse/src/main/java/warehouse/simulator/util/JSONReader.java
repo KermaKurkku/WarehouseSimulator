@@ -9,7 +9,18 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * Utility class for reading JSON files.
+ * @author Jere Salmensaari
+ */
 public class JSONReader {
+    
+    /**
+     * Reads a JSON file and returns it as
+     * a JSONObject.
+     * @param f File to read.
+     * @return jsonObj JSONObject to be returned.
+     */
     public static JSONObject readJSON(File f)
     {
         JSONParser parser = new JSONParser();

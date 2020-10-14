@@ -3,14 +3,10 @@ package warehouse.simulator.model;
 import eduni.distributions.ContinuousGenerator;
 
 /**
- * This class creates orders for the systems router
- * Used to initialize the orders
- * 
+ * Class used to create orders for the simulators
+ * WarehouseRouter.
+ * @author Jere Salmensaari
  */
-
- // TODO rest od javadoc
-
- // TODO Lisää satunnaisgeneroitu lisättävien tilausten määrä
 public class OrderGenerator {
     private ContinuousGenerator generator;
     private WarehouseRouter router;
@@ -18,8 +14,8 @@ public class OrderGenerator {
     private CollectingStation[] stations;
 
     /**
-     * Constructor for the Order generator
-     * @param generator Number generator for generating order collect times
+     * Constructor for the Order generator.
+     * @param motor Motor reference for the generator.
      */
     public OrderGenerator(Motor motor)
     {
@@ -27,13 +23,18 @@ public class OrderGenerator {
         this.motor = motor;
     }
 
+    /**
+     * Sets the generator for order collect time generation.
+     * @param generator Generator to be set.
+     */
     public void setGenerator(ContinuousGenerator generator)
     {
         this.generator = generator;
     }
 
     /**
-     * Creates a specified amount of orders
+     * Creates a specified amount of orders.
+     * @param amount Amount of orders to be created.
      */
     public void createOrders(double amount)
     {
@@ -50,6 +51,11 @@ public class OrderGenerator {
         
     }
 
+    /**
+     * Creates a specified amount of orders and 
+     * creates the first event for order routing.
+     * @param amount Amount of orders to be created.
+     */
     public void initializeOrders(int amount)
     {
         for (int i = 0; i < Math.abs(amount); i++)
@@ -75,8 +81,8 @@ public class OrderGenerator {
     }
 
     /**
-     * Generates an integer to set a leaving Time for the orders
-     * @return int to set a leaving Time for orders
+     * Generates an integer to set a leaving Time for the orders.
+     * @return int to set a leaving Time for orders.
      */
     private int generateLeaveTime()
     {
@@ -98,6 +104,10 @@ public class OrderGenerator {
         
     }
     
+    /**
+     * Sets the CollectingStations in the Generator.
+     * @param stations CollectingStations to be set.
+     */
     public void setStations(CollectingStation[] stations)
     {
     	this.stations = stations;

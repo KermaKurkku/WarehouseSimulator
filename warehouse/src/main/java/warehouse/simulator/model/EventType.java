@@ -1,11 +1,20 @@
 package warehouse.simulator.model;
 
 /**
- * Event types to tell what the motor should be doing next
+ * Different event types that can happen in the simulation.
+ * @author Jere Salmensaari
  */
 public enum EventType {
+	/**
+	 * Event for the ending of a collection.
+	 */
     COLL,
+    /**
+     * Event for routing more orders.
+     */
     ROUT,
-    ORDR,
-    END
+    /**
+     * Evemt for generating new orders.
+     */
+    ORDR
 }

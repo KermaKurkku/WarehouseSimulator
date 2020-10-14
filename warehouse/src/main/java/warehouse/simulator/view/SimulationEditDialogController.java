@@ -17,16 +17,17 @@ import warehouse.simulator.util.JSONReader;
 
 import java.io.FileWriter;
 import java.io.File;
-import java.io.Reader;
-import java.io.FileReader;
+
 import java.io.IOException;
 import java.util.Optional;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.*;
 
-// TODO javadoc
+/**
+ * Class for creating and controlling the simulation edit dialog
+ * @author Jere Salmensaari
+ */
 public class SimulationEditDialogController {
 
 	@FXML
@@ -69,12 +70,13 @@ public class SimulationEditDialogController {
 
 	private Object[] defaults;
 	
-	public SimulationEditDialogController()
-	{
-		
-	}
-	
 	@FXML
+	/**
+	 * Called when the FXML file is loaded
+	 * Creates the lists and onClick-events for the 
+	 * interface.
+	 * Reads the default settings from defaults.json
+	 */
 	private void initialize()
 	{
 		ObservableList<Order.SortType> options = FXCollections.observableArrayList(
@@ -84,8 +86,6 @@ public class SimulationEditDialogController {
 				);
 		this.sortTypeList.getItems().addAll(options);
 		readDefaults();
-		System.out.println(defaults);
-
 		// Clear input fields on click
 
 		this.stationCountField.setOnMouseClicked((event) -> {
@@ -126,6 +126,10 @@ public class SimulationEditDialogController {
 
 	}
 
+	/**
+	 * Sets the stage of the class.
+	 * @param stage Stage to be set.
+	 */
 	public void setDialogStage(Stage stage)
 	{
 		this.dialogStage = stage;
@@ -133,6 +137,15 @@ public class SimulationEditDialogController {
 
 	@FXML
 	@SuppressWarnings("unchecked")
+	/**
+	 * Handles the activation of the OK-button.
+	 * <p>
+	 * Saves the given settings as settings.json in
+	 * the resources folder of the appplication.
+	 * <p>
+	 * Shows an alert window if some of the input fields
+	 * don't have the correct type of input.
+	 */
 	private void handleOK()
 	{
 		if (!isInputValid())
@@ -172,6 +185,10 @@ public class SimulationEditDialogController {
 	}
 
 	@FXML 
+	/**
+	 * Handles the activation of the cancel-button.
+	 * Closes the window.
+	 */
 	private void handleCancel()
 	{
 		dialogStage.close();
@@ -179,6 +196,11 @@ public class SimulationEditDialogController {
 
 	@SuppressWarnings("unchecked")
 	@FXML
+	/**
+	 * Handles the activation of the default button.
+	 * <p>
+	 * Sets the settings to those of default.json.
+	 */
 	private void handleDefault()
 	{
 		JSONObject obj = new JSONObject();
@@ -204,6 +226,9 @@ public class SimulationEditDialogController {
 		dialogStage.close();
 	}
 
+	/**
+	 * Reads the defaults.json file.
+	 */
 	private void readDefaults()
 	{
 		defaults = new Object[10];
@@ -230,6 +255,10 @@ public class SimulationEditDialogController {
 	
 	}
 
+	/**
+	 * Checks all input fields have valid input.
+	 * @return True if input is valid, otherwise false.
+	 */
 	private boolean isInputValid()
 	{
 		if (!validateInput(this.stationCountField.getText()))
@@ -253,6 +282,14 @@ public class SimulationEditDialogController {
 		return true;
 	}
 
+	/**
+	 * Checks if the given string is valid input for
+	 * the purposes of this program
+	 * @param input String to be checkd
+	 * @return True if input is valid, otherwise false.
+	 * <p>
+	 * If input is not valid, shows an Alert window.
+	 */
 	private boolean validateInput(String input)
 	{
 		String errorString = "";
@@ -283,6 +320,14 @@ public class SimulationEditDialogController {
 
 	}
 	
+	/**
+	 * Opens popups to set the amount of collectors
+	 * in each given collecting station.
+	 * @param count Amount of collecting stations in
+	 * the program.
+	 * @return collectors Array that has the amount of
+	 * collectors in the stations matching the index.
+	 */
 	private String[] setCollectorCounts(int count)
 	{
 		String[] collectors = new String[count];

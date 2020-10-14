@@ -21,6 +21,11 @@
                   <MenuItem mnemonicParsing="false" onAction="#handleLoad" text="Load settings" />
                </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Results">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#handleShowResults" text="Show Results" />
+              </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
