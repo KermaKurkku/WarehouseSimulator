@@ -1,0 +1,13 @@
+{
+    "stationCount":"3",
+    "collectors": 
+    ["2","3","4"],
+    "sortType":"FIFO",
+    "minimumOrders":"15",
+    "minRouteVariance":"10",
+    "maxRouteVariance":"25",
+    "medianOrderCollectVariance":"0.1",
+    "varianceOrderCollectVariance":"0.15",
+    "medianOrderVariance":"3",
+    "varianceOrderVariance":"4"
+}

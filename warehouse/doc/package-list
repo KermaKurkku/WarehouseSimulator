@@ -1,0 +1,8 @@
+warehouse
+warehouse.simulator
+warehouse.simulator.controller
+warehouse.simulator.dao
+warehouse.simulator.model
+warehouse.simulator.util
+warehouse.simulator.view
+warehouse.simulator.view.animation

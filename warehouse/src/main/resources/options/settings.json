@@ -1,0 +1,1 @@
+{"minimumOrders":"15","collectors":["2","3","4"],"sortType":"FIFO","stationCount":"3","maxRouteVariance":"25","minRouteVariance":"10","varianceOrderCollectVariance":"0.15","medianOrderVariance":"3","varianceOrderVariance":"4","medianOrderCollectVariance":"0.1"}

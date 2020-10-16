@@ -1,0 +1,1 @@
+{"minimumOrders":"30","collectors":["3","5","4","3","2"],"sortType":"TIME","stationCount":"5","maxRouteVariance":"30","minRouteVariance":"15","varianceOrderCollectVariance":"0.15","medianOrderVariance":"6","varianceOrderVariance":"2","medianOrderCollectVariance":"0.1"}
